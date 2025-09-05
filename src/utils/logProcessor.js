@@ -297,27 +297,6 @@ class LogProcessor {
       throw error;
     }
   }
-
-  /**
-   * Process incoming log request (single line - legacy method)
-   */
-  async processLogRequest(deviceId, logMessage) {
-    try {
-      // Track request for rate calculation
-      this.trackRequest();
-
-      // Create enriched log entry
-      const { logEntry, filename } = this.createLogEntry(deviceId, logMessage);
-
-      // Write to filesystem buffer
-      await this.writeLogEntry(logEntry, filename);
-
-      return { success: true };
-    } catch (error) {
-      console.error("Error processing log request:", error);
-      throw error;
-    }
-  }
 }
 
 module.exports = LogProcessor;
