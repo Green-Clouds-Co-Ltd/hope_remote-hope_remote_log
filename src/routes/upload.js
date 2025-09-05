@@ -13,11 +13,11 @@ const upload = multer({
 });
 
 /**
- * POST /upload-logs/:device_id
+ * POST /supervisor/v1/:device_id/upload-logs
  * Upload log entry from device (supports both raw text and file upload)
  */
 router.post(
-  "/upload-logs/:device_id",
+  "/supervisor/v1/:device_id/upload-logs",
   authenticateApiKey,
   upload.single("files"),
   async (req, res) => {

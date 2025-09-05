@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 
 const express = require("express");
 const cron = require("node-cron");
@@ -98,7 +98,7 @@ class HopeRemoteLogApp {
         version: "1.0.0",
         status: "running",
         endpoints: {
-          upload: "POST /upload-logs/:device_id",
+          upload: "POST /supervisor/v1/:device_id/upload-logs",
           status: "GET /api/status",
           stats: "GET /api/stats",
           buffer: "GET /api/buffer/state",
