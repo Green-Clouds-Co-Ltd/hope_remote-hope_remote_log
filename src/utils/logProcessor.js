@@ -214,9 +214,7 @@ class LogProcessor {
       // Split content into lines and filter out empty lines
       const logLines = logContent.split("\n").filter((line) => line.length > 0);
 
-      if (logLines.length === 0) {
-        throw new Error("No valid log lines found in content");
-      }
+      if (logLines.length === 0) return { success: false, linesProcessed: 0, filesWritten: 0 };
 
       // Track indices within each second to preserve ordering
       const secondCounters = new Map();
