@@ -30,57 +30,7 @@ router.post(
 
     try {
       const { device_id } = req.params;
-      let logMessage;
-
-      // Validate device_id
-      if (!device_id) {
-        console.log(
-          `[${new Date().toISOString()}] Upload failed: Missing device_id`
-        );
-        return res.status(400).json({
-          error: "Missing device_id parameter",
-        });
-      }
-
-      // Extract log message from either file upload or raw body
-      if (req.file) {
-        // File upload via form-data
-        logMessage = req.file.buffer.toString("utf8");
-        console.log(
-          `[${new Date().toISOString()}] File upload detected - size: ${
-            req.file.size
-          } bytes, filename: ${req.file.originalname || "unknown"}`
-        );
-      } else if (req.body && typeof req.body === "string") {
-        // Raw text upload
-        logMessage = req.body;
-        console.log(
-          `[${new Date().toISOString()}] Raw text upload detected - size: ${
-            req.body.length
-          } characters`
-        );
-      } else {
-        console.log(
-          `[${new Date().toISOString()}] Upload failed: Invalid content type - no file or raw text found`
-        );
-        return res.status(400).json({
-          error: "Invalid log message: must be plain text or uploaded file",
-        });
-      }
-
-      // Validate log message content
-      if (
-        !logMessage ||
-        typeof logMessage !== "string" ||
-        logMessage.trim() === ""
-      ) {
-        console.log(
-          `[${new Date().toISOString()}] Upload failed: Empty or invalid log content`
-        );
-        return res.status(400).json({
-          error: "Invalid log message: must be plain text",
-        });
-      }
+      let logMessage = req.file.buffer.toString("utf8");
 
       const lineCount = logMessage
         .split("\n")
