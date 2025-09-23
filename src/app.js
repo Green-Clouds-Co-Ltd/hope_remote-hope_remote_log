@@ -60,9 +60,10 @@ class HopeRemoteLogApp {
     // Parse JSON for API endpoints
     this.app.use("/api", express.json());
 
-    // Inject log processor for monitoring endpoints
+    // Inject log processor and batch processor for monitoring endpoints
     this.app.use("/api", (req, res, next) => {
       req.logProcessor = logProcessor;
+      req.batchProcessor = this.batchProcessor;
       next();
     });
 
@@ -103,6 +104,7 @@ class HopeRemoteLogApp {
           stats: "GET /api/stats",
           buffer: "GET /api/buffer/state",
           failures: "GET /api/failures",
+          triggerBatch: "POST /api/trigger-batch",
         },
       });
     });

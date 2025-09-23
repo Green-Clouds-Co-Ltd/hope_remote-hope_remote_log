@@ -120,4 +120,44 @@ router.get("/api/failures", async (req, res) => {
   }
 });
 
+/**
+ * POST /api/trigger-batch
+ * Manually trigger batch processing
+ */
+router.post("/api/trigger-batch", async (req, res) => {
+  try {
+    // Get batch processor instance from app context
+    if (!req.batchProcessor) {
+      return res.status(500).json({
+        error: "Batch processor not available",
+      });
+    }
+
+    // Check if batch processing is already running
+    if (req.batchProcessor.isProcessing) {
+      return res.status(409).json({
+        error: "Batch processing already in progress",
+        message: "Please wait for current batch processing to complete",
+      });
+    }
+
+    // Trigger batch processing asynchronously
+    console.log("Manual batch processing triggered via API");
+    req.batchProcessor.run().catch((error) => {
+      console.error("Manual batch processing failed:", error);
+    });
+
+    res.status(202).json({
+      status: "accepted",
+      message: "Batch processing started",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error triggering batch processing:", error);
+    res.status(500).json({
+      error: "Failed to trigger batch processing",
+    });
+  }
+});
+
 module.exports = router;
