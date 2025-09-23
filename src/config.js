@@ -34,7 +34,7 @@ const config = {
 
   // Processing configuration
   processing: {
-    cronSchedule: "5 * * * *", // 5 minutes past every hour
+    cronSchedule: "5 */30 * * * *", // 5 minutes past every half hour
     maxRetries: 3,
     s3KeyPrefix: "logs",
   },
