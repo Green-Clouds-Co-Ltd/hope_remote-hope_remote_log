@@ -205,7 +205,7 @@ class BatchProcessor {
   }
 
   /**
-   * Generate S3 key with partitioning
+   * Generate S3 key with partitioning and random suffix to prevent overwrites
    */
   generateS3Key(filename) {
     // Extract date from filename (YYYY-MM-DD-HH.log)
@@ -215,7 +215,13 @@ class BatchProcessor {
     }
 
     const [, year, month, day, hour] = match;
-    return `${config.processing.s3KeyPrefix}/year=${year}/month=${month}/day=${day}/hour=${hour}/${filename}.gz`;
+    // Add random suffix to prevent overwrites when running multiple times per hour
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    const uniqueFilename = `${filename.replace(
+      ".log",
+      ""
+    )}_${randomSuffix}.log`;
+    return `${config.processing.s3KeyPrefix}/year=${year}/month=${month}/day=${day}/hour=${hour}/${uniqueFilename}.gz`;
   }
 
   /**
