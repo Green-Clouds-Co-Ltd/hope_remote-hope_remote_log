@@ -94,22 +94,12 @@ class BatchProcessor {
   }
 
   /**
-   * Sweep completed files from incoming to processing
+   * Sweep all files from incoming to processing
    */
   async sweepCompletedFiles() {
-    const currentHour = new Date().getHours();
-    const currentDate = new Date();
-    const currentHourKey = `${currentDate.getFullYear()}-${String(
-      currentDate.getMonth() + 1
-    ).padStart(2, "0")}-${String(currentDate.getDate()).padStart(
-      2,
-      "0"
-    )}-${String(currentHour).padStart(2, "0")}`;
-
     const incomingFiles = await FilesystemManager.listFiles(
       config.paths.incoming,
-      (filename) =>
-        filename.endsWith(".log") && !filename.startsWith(currentHourKey)
+      (filename) => filename.endsWith(".log")
     );
 
     const sweptFiles = [];
